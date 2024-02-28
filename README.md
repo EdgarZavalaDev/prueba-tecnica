@@ -2,6 +2,6 @@
 
 Este repositorio comprende tres pruebas técnicas: php, prueba-laravel, prueba-webservice.
 
-Cada prueba técnica es una carptea independiente y contiene su propio conjunto de archivos y directorios. A continuación se presenta una breve descripción de cada una:
+*Nota:* En el proyecto de laravel para subir imagenes se crea un enlace simbolico para que pueda ser accedido desde carpeta publica y dejar los archivos en storage. Se modifico el gitignore para que este enlace o carpeta en public pueda verse reflejado el archivo cargado.
 
 ¡Gracias por revisar este repositorio!
