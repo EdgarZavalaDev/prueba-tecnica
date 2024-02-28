@@ -19,7 +19,7 @@
             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                 <table class="w-100 text-center table-hover table-bordered table-primary">
                     <thead>
-                        <tr class="">
+                        <tr>
                             <th>#</th>
                             <th>Imagen</th>
                             <th>Nombre</th>
@@ -29,26 +29,32 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        @foreach ($productos as $producto)
+                        @if(!empty($productos))
+                            @foreach ($productos as $producto)
+                                <tr>
+                                    <td>{{ $producto->id }}</td>
+                                    <td>
+                                        @if(!empty($producto->imagen))
+                                            <img src="{{ asset('storage/' . $producto->imagen) }}" width="80px" alt="{{ $producto->nombre }}">
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>{{ $producto->nombre }}</td>
+                                    <td>${{ $producto->precio }}</td>
+                                    <td>{{ $producto->cantidad }}</td>
+                                    <td width="30%" class="p-2">
+                                        <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-info">Ver</a>
+                                        <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-primary">Editar</a>
+                                        <form class="d-inline" method="POST" action="{{ route('productos.destroy', $producto->id) }}">{{ csrf_field() }}<input name="_method" type="hidden" value="DELETE"><button type="submit" class="btn btn-danger">Eliminar</button></form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
                             <tr>
-                                <td>{{ $producto->id }}</td>
-                                <td>
-                                    @if(!empty($producto->imagen))
-                                        <img src="{{ asset('storage/' . $producto->imagen) }}" width="80px" alt="{{ $producto->nombre }}">
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                                <td>{{ $producto->nombre }}</td>
-                                <td>${{ $producto->precio }}</td>
-                                <td>{{ $producto->cantidad }}</td>
-                                <td width="30%" class="p-2">
-                                    <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-info">Ver</a>
-                                    <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-primary">Editar</a>
-                                    <form class="d-inline" method="POST" action="{{ route('productos.destroy', $producto->id) }}">{{ csrf_field() }}<input name="_method" type="hidden" value="DELETE"><button type="submit" class="btn btn-danger">Eliminar</button></form>
-                                </td>
+                                <td colspan="6">Sin registros</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

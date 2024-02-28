@@ -15,7 +15,12 @@ class ProductoController extends Controller
     public function index()
     {
         $productos = Producto::orderBy('id','desc')->get();
-        return view('productos.index', compact('productos'));
+
+        if ($productos->isEmpty()) {
+            return view('productos.index')->with('productos', null);
+        }
+
+        return view('productos.index')->with('productos', $productos);
     }
 
     /**
@@ -71,18 +76,18 @@ class ProductoController extends Controller
      */
     public function update(ProductoRequest $request, string $id)
     {
-        $ruta = null;
         if ($request->hasFile('imagen')) {
             $item = Producto::find($id);
             Storage::delete('public/'.$item->imagen);
             $ruta = $request->file('imagen')->store('public');
+            $item->imagen = basename($ruta);
+            $item->save();
         }
 
         $producto = Producto::find($id);
         $producto->nombre =  $request->input('nombre');
         $producto->precio = $request->input('precio');
         $producto->cantidad = $request->input('cantidad');
-        $producto->imagen = basename($ruta);
         $producto->save();
 
         return redirect()->route('productos.index')->with('success', 'Producto editado correctamente');
